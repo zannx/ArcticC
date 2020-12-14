@@ -1,7 +1,8 @@
 ﻿using System;
-using static ArticCSharp.StringCompiler.CompilerStr;
+using static ArcticC.StringCompiler.CompilerStr;
+using static ArcticC.StringCompiler.ByteArrays;
 
-namespace ArticCSharp
+namespace ArcticC
 {
 
     class Program
@@ -9,7 +10,7 @@ namespace ArticCSharp
    
         static void Main(string[] args)
         {
-
+            //Basic variables
             string SourceMain = "";
             string Assembly = "";
 
@@ -17,7 +18,7 @@ namespace ArticCSharp
             { 
                 string Input = Convert.ToString(Console.ReadLine());
                 
-                if (Input.ToLower() == "compile")
+                if (CheckBytes(CompilerString(Input.ToLower()), compile))
                 {
                     char[] SourceMainChar = SourceMain.ToCharArray();
 
@@ -29,9 +30,9 @@ namespace ArticCSharp
                         {
                             
                             //End
-                            if (CompilerString(Object.ToLower()) == "656E64")
+                            if (CheckBytes(CompilerString(Object.ToLower()), end))
                             {
-                                Console.WriteLine(CompilerString(Object.ToLower()));
+                                Console.WriteLine(Object.ToLower());
                             }
 
                             //Check string what it is and convert it to C#
