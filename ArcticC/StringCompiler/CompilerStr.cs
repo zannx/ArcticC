@@ -40,5 +40,25 @@ namespace ArcticC.StringCompiler
 
             return AreTheyTheSame;
         }
+
+        public static bool ContainsByte(byte[] First, byte Second)
+        {
+            bool AreTheyTheSame = false;
+            
+            for (int i = 0; i <= First.Length - 1; i++)
+            {
+                if ((byte)First[i] == (byte)Second)
+                {
+                    AreTheyTheSame = true;
+                    break;
+                }
+                else
+                {
+                    AreTheyTheSame = false;
+                }
+            }
+            
+            return AreTheyTheSame;
+        }
     }
 }

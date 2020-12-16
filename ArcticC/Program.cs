@@ -52,9 +52,12 @@ namespace ArcticC
                     //    Object = Object + SourceMainChar[i].ToString();
                     //}
 
-                    LexerCheck(SourceMainChar);
                     //Run C# code and return result
 
+                    foreach (string[] s in (LexerCheck(SourceMainChar)))
+                    {
+                        Console.WriteLine(s[0]  + ", " + s[1]);
+                    }
                 }
                 else
                 {
