@@ -31,6 +31,7 @@ namespace ArcticC.Lexer
                         Together = Together + characterarray[i].ToString();
                         SourceAppart[1][Count] = Together;
                     }
+                    Count = Count + 1;
                     continue;
                 }
 
@@ -55,8 +56,10 @@ namespace ArcticC.Lexer
                             Together = Together + characterarray[i].ToString();
                             i++;
                         }
-                        SourceAppart[1][Count] = "\"" + Together + "\"";
+                        i--;
                     }
+                    SourceAppart[1][Count] = "\"" + Together + "\"";
+                    Count = Count + 1;
                     continue;
                 }
 
@@ -65,7 +68,7 @@ namespace ArcticC.Lexer
                 {
                     if ((byte)One != (byte)0x20)
                     {
-                        SourceAppart[0][Count] = "\"" + characterarray[i].ToString() + "\"";
+                        SourceAppart[0][Count] = "\"" + characterarray[i] + "\"";
                         SourceAppart[1][Count] = "\"\"";
                     }
                     else {
@@ -74,6 +77,7 @@ namespace ArcticC.Lexer
                 }
                 else
                 {
+                    //Variables
                     if (CheckByteSize(0x41, (byte)characterarray[i], 0x5A) || CheckByteSize(0x61, (byte)characterarray[i], 0x7A))
                     {
                         string Together = "\"identifier\"";
@@ -81,6 +85,23 @@ namespace ArcticC.Lexer
 
                         string NameVariable = "";
                         while (CheckByteSize(0x41, (byte)characterarray[i], 0x5A) || CheckByteSize(0x61, (byte)characterarray[i], 0x7A))
+                        {
+                            NameVariable = NameVariable + characterarray[i];
+                            i++;
+                        }
+                        i--;
+                        SourceAppart[1][Count] = "\"" + NameVariable + "\"";
+                    }
+
+                    //Strings
+                    if ((byte)characterarray[i] == 0x22)
+                    {
+                        string Together = "\"string\"";
+                        SourceAppart[0][Count] = Together;
+
+                        string NameVariable = "";
+                        i++;
+                        while ((byte)characterarray[i] != 0x22)
                         {
                             NameVariable = NameVariable + characterarray[i];
                             i++;
