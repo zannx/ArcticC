@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using static ArcticC.StringCompiler.CompilerStr;
 using static ArcticC.StringCompiler.ByteArrays;
+using static ArcticC.Lexer.LexerFunctions;
 using System.Linq;
 
 namespace ArcticC.Lexer
@@ -13,6 +14,7 @@ namespace ArcticC.Lexer
         {
             string[][] SourceAppart = new string[][] {new string[characterarray.Length], new string[characterarray.Length]};
 
+            int Count = 0;
             for (int i = 0; i <= characterarray.Length - 1; i++)
             {
                 byte One = (byte)characterarray[i];
@@ -21,52 +23,73 @@ namespace ArcticC.Lexer
                 if (ContainsByte(operators, One))
                 {
                     string Together = characterarray[i].ToString();
-                    SourceAppart[1][i] = Together;
-                    SourceAppart[0][i] = "operator";
-                    if (ContainsByte(operators, One))
+                    SourceAppart[1][Count] = Together;
+                    SourceAppart[0][Count] = "\"operator\"";
+                    if (ContainsByte(operators, (byte)characterarray[i + 1]))
                     {
-                        Together = Together + characterarray[i + 1].ToString();
-                        SourceAppart[0][i] = "operator";
-                        SourceAppart[1][i] = Together;
                         i++;
+                        Together = Together + characterarray[i].ToString();
+                        SourceAppart[1][Count] = Together;
                     }
+                    continue;
                 }
 
-                //Integer or float
+                //Integer or decimal
                 if (ContainsByte(integers, One))
                 {
                     string Together = characterarray[i].ToString();
-                    SourceAppart[0][i] = "integer";
+                    SourceAppart[0][Count] = "\"integer\"";
 
-                    int Count = 1;
-                    byte NewOne = (byte)(characterarray[i] + Count);
-                    while (ContainsByte(integers, NewOne) || ContainsByte(dot, NewOne))
+                    if (ContainsByte(integers, (byte)characterarray[i + 1]) || (ContainsByte(dot, (byte)characterarray[i + 1])))
                     {
-                        if (ContainsByte(dot, NewOne))
-                        {
-                            Together = Together + characterarray[i + 1].ToString();
-                            SourceAppart[1][i] = Together;
-                            SourceAppart[0][i] = "float";
-                            Count = Count + 1;
-                            NewOne = (byte)(characterarray[i] + Count);
-                            i++;
-                            continue;
-                        }
-                        Together = Together + characterarray[i + 1].ToString();
-                        SourceAppart[1][i] = Together;
-                        Count = Count + 1;
-                        NewOne = (byte)(characterarray[i] + Count);
                         i++;
+                        SourceAppart[0][Count] = "\"decimal\"";
+                        while (ContainsByte(integers, (byte)(characterarray[i])) || ContainsByte(dot, (byte)(characterarray[i])))
+                        {
+                            if (ContainsByte(dot, (byte)(characterarray[i])))
+                            {
+                                Together = Together + characterarray[i].ToString();
+                                i++;
+                                continue;
+                            }
+                            Together = Together + characterarray[i].ToString();
+                            i++;
+                        }
+                        SourceAppart[1][Count] = "\"" + Together + "\"";
                     }
+                    continue;
                 }
 
                 //Nothing
                 if (ContainsByte(nothing, One))
                 {
-                    string Together = "-";
-                    SourceAppart[0][i] = Together;
+                    if ((byte)One != (byte)0x20)
+                    {
+                        SourceAppart[0][Count] = "\"" + characterarray[i].ToString() + "\"";
+                        SourceAppart[1][Count] = "\"\"";
+                    }
+                    else {
+                        continue;
+                    }
                 }
+                else
+                {
+                    if (CheckByteSize(0x41, (byte)characterarray[i], 0x5A) || CheckByteSize(0x61, (byte)characterarray[i], 0x7A))
+                    {
+                        string Together = "\"identifier\"";
+                        SourceAppart[0][Count] = Together;
 
+                        string NameVariable = "";
+                        while (CheckByteSize(0x41, (byte)characterarray[i], 0x5A) || CheckByteSize(0x61, (byte)characterarray[i], 0x7A))
+                        {
+                            NameVariable = NameVariable + characterarray[i];
+                            i++;
+                        }
+
+                        SourceAppart[1][Count] = "\"" + NameVariable + "\"";
+                    }
+                }
+                Count = Count + 1;
             }
             SourceAppart[0] = SourceAppart[0].Where(x => !string.IsNullOrEmpty(x)).ToArray();
             SourceAppart[1] = SourceAppart[1].Where(x => !string.IsNullOrEmpty(x)).ToArray();

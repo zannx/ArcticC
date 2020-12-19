@@ -53,11 +53,13 @@ namespace ArcticC
                     //}
 
                     //Run C# code and return result
+                    string[][] LexeredTable = LexerCheck(SourceMainChar);
 
-                    foreach (string[] s in (LexerCheck(SourceMainChar)))
+                    for (int i = 0; i <= LexeredTable.Length - 1; i++)
                     {
-                        Console.WriteLine(s[0]  + ", " + s[1]);
+                        Console.WriteLine(LexeredTable[0][i].ToString() + ", " + LexeredTable[1][i].ToString());
                     }
+        
                 }
                 else
                 {
