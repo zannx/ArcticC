@@ -109,7 +109,7 @@ namespace ArcticC.Lexer
                             || CheckBytes(GenerateByteArray(NameVariable), FALSE))
                         {
                             SourceAppart[0][Count] = "\"boolean\"";
-                            SourceAppart[1][Count] = "\"" + characterarray[i] + "\"";
+                            SourceAppart[1][Count] = "\"" + NameVariable + "\"";
                         }
                     }
 
