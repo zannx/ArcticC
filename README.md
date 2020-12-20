@@ -6,5 +6,7 @@ A simple programming language. <br>
 
 ![lexer variables](imgs/LexerVariables.PNG)<br>
 
+![lexer simple algo](imgs/LexerNew.PNG)<br>
+
 Please note that this programming lanugage is not working yet! <br>
 (Currently working on lexer)
