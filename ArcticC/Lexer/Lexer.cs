@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using static ArcticC.StringCompiler.CompilerStr;
 using static ArcticC.StringCompiler.ByteArrays;
 using static ArcticC.Lexer.LexerFunctions;
-using System.Linq;
 
 namespace ArcticC.Lexer
 {
@@ -23,13 +23,13 @@ namespace ArcticC.Lexer
                 if (ContainsByte(operators, One))
                 {
                     string Together = characterarray[i].ToString();
-                    SourceAppart[1][Count] = Together;
+                    SourceAppart[1][Count] = "\"" + Together + "\"";
                     SourceAppart[0][Count] = "\"operator\"";
                     if (ContainsByte(operators, (byte)characterarray[i + 1]))
                     {
                         i++;
                         Together = Together + characterarray[i].ToString();
-                        SourceAppart[1][Count] = Together;
+                        SourceAppart[1][Count] = "\"" + Together + "\"";
                     }
                     Count = Count + 1;
                     continue;
@@ -91,6 +91,17 @@ namespace ArcticC.Lexer
                         }
                         i--;
                         SourceAppart[1][Count] = "\"" + NameVariable + "\"";
+
+                        if (CheckBytes(GenerateByteArray(NameVariable),IF)
+                            || CheckBytes(GenerateByteArray(NameVariable), WHILE)
+                            || CheckBytes(GenerateByteArray(NameVariable), FOR)
+                            || CheckBytes(GenerateByteArray(NameVariable), ELSE)
+                            || CheckBytes(GenerateByteArray(NameVariable), BREAK)
+                            || CheckBytes(GenerateByteArray(NameVariable), SWITCH)
+                            || CheckBytes(GenerateByteArray(NameVariable), CONTINUE))
+                        {
+                            SourceAppart[0][Count] = "\"keyword\"";
+                        }
                     }
 
                     //Strings
@@ -108,6 +119,14 @@ namespace ArcticC.Lexer
                         }
 
                         SourceAppart[1][Count] = "\"" + NameVariable + "\"";
+                    }
+
+
+                    //Seperators
+                    if (ContainsByte(separator, One))
+                    {
+                        SourceAppart[0][Count] = "\"seperator\"";
+                        SourceAppart[1][Count] = "\"" + characterarray[i] + "\"";
                     }
                 }
                 Count = Count + 1;
