@@ -5,6 +5,8 @@ A simple programming language. <br>
 + Working for variables. <br>
 + Working for separators. <br>
 + Working for keywords (not all). <br>
+<hr>
+
 
 ![lexer variables](imgs/LexerVariables.PNG)<br>
 
