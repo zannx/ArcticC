@@ -92,6 +92,7 @@ namespace ArcticC.Lexer
                         i--;
                         SourceAppart[1][Count] = "\"" + NameVariable + "\"";
 
+                        //Keywords
                         if (CheckBytes(GenerateByteArray(NameVariable),IF)
                             || CheckBytes(GenerateByteArray(NameVariable), WHILE)
                             || CheckBytes(GenerateByteArray(NameVariable), FOR)
@@ -102,6 +103,14 @@ namespace ArcticC.Lexer
                         {
                             SourceAppart[0][Count] = "\"keyword\"";
                         }
+
+                        //Booleans
+                        if (CheckBytes(GenerateByteArray(NameVariable), TRUE)
+                            || CheckBytes(GenerateByteArray(NameVariable), FALSE))
+                        {
+                            SourceAppart[0][Count] = "\"boolean\"";
+                            SourceAppart[1][Count] = "\"" + characterarray[i] + "\"";
+                        }
                     }
 
                     //Strings
@@ -109,10 +118,27 @@ namespace ArcticC.Lexer
                     {
                         string Together = "\"string\"";
                         SourceAppart[0][Count] = Together;
-
+                        
                         string NameVariable = "";
                         i++;
                         while ((byte)characterarray[i] != 0x22)
+                        {
+                            NameVariable = NameVariable + characterarray[i];
+                            i++;
+                        }
+
+                        SourceAppart[1][Count] = "\"" + NameVariable + "\"";
+                    }
+
+                    //Comment
+                    if ((byte)characterarray[i] == 0xB0)
+                    {
+                        string Together = "\"comment\"";
+                        SourceAppart[0][Count] = Together;
+
+                        string NameVariable = "";
+                        i++;
+                        while ((byte)characterarray[i] != 0xB0)
                         {
                             NameVariable = NameVariable + characterarray[i];
                             i++;
@@ -128,6 +154,7 @@ namespace ArcticC.Lexer
                         SourceAppart[0][Count] = "\"seperator\"";
                         SourceAppart[1][Count] = "\"" + characterarray[i] + "\"";
                     }
+
                 }
                 Count = Count + 1;
             }
