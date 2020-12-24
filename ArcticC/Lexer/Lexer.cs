@@ -93,13 +93,15 @@ namespace ArcticC.Lexer
                         SourceAppart[1][Count] = "\"" + NameVariable + "\"";
 
                         //Keywords
-                        if (CheckBytes(GenerateByteArray(NameVariable),IF)
+                        if (CheckBytes(GenerateByteArray(NameVariable), IF)
                             || CheckBytes(GenerateByteArray(NameVariable), WHILE)
                             || CheckBytes(GenerateByteArray(NameVariable), FOR)
                             || CheckBytes(GenerateByteArray(NameVariable), ELSE)
                             || CheckBytes(GenerateByteArray(NameVariable), BREAK)
                             || CheckBytes(GenerateByteArray(NameVariable), SWITCH)
-                            || CheckBytes(GenerateByteArray(NameVariable), CONTINUE))
+                            || CheckBytes(GenerateByteArray(NameVariable), CONTINUE)
+                            || CheckBytes(GenerateByteArray(NameVariable), CASE)
+                            || CheckBytes(GenerateByteArray(NameVariable), DEFAULT))
                         {
                             SourceAppart[0][Count] = "\"keyword\"";
                         }
@@ -121,14 +123,59 @@ namespace ArcticC.Lexer
                         
                         string NameVariable = "";
                         i++;
+                        bool Stop = false;
                         while ((byte)characterarray[i] != 0x22)
+                        {
+                            if (characterarray.Length - 1 > i)
+                            {
+                                NameVariable = NameVariable + characterarray[i];
+                                i++;
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Error: the end of string wasn't declared at \"{0}", NameVariable);
+                                Console.ForegroundColor = ConsoleColor.White;
+                                Stop = true;
+                                break;
+                            }
+                        }
+
+                        if (Stop)
+                        {
+                            SourceAppart = new string[][] { };
+                            return SourceAppart;
+                        }
+
+                        SourceAppart[1][Count] = "\"" + NameVariable + "\"";
+                    }
+
+                    //Char
+                    if ((byte)characterarray[i] == 0x27)
+                    {
+                        string Together = "\"char\"";
+                        SourceAppart[0][Count] = Together;
+
+                        string NameVariable = "";
+                        i++;
+                        while ((byte)characterarray[i] != 0x27)
                         {
                             NameVariable = NameVariable + characterarray[i];
                             i++;
                         }
 
+                        if (NameVariable.Length > 1)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Error: declare char type with only one character not multiple: \'{0}\', else use string sign \"[text]\" ", NameVariable);
+                            Console.ForegroundColor = ConsoleColor.White;
+                            SourceAppart = new string[][] {};
+                            return SourceAppart;
+                        }
+
                         SourceAppart[1][Count] = "\"" + NameVariable + "\"";
                     }
+
 
                     //Comment
                     if ((byte)characterarray[i] == 0xB0)
@@ -137,11 +184,29 @@ namespace ArcticC.Lexer
                         SourceAppart[0][Count] = Together;
 
                         string NameVariable = "";
+                        bool Stop = false;
                         i++;
                         while ((byte)characterarray[i] != 0xB0)
                         {
-                            NameVariable = NameVariable + characterarray[i];
-                            i++;
+                            if (characterarray.Length - 1 > i)
+                            {
+                                NameVariable = NameVariable + characterarray[i];
+                                i++;
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Error: the end of comment wasn't declared at °{0}", NameVariable);
+                                Console.ForegroundColor = ConsoleColor.White;
+                                Stop = true;
+                                break;
+                            }
+                        }
+
+                        if (Stop)
+                        {
+                            SourceAppart = new string[][] {};
+                            return SourceAppart;
                         }
 
                         SourceAppart[1][Count] = "\"" + NameVariable + "\"";

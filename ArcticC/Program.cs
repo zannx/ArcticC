@@ -17,7 +17,8 @@ namespace ArcticC
             string Assembly = "";
 
             while (true)
-            { 
+            {
+                Console.ForegroundColor = ConsoleColor.White;
                 string Input = Convert.ToString(Console.ReadLine());
                 SourceMain = SourceMain + Convert.ToString('\x20');
 
@@ -28,9 +29,18 @@ namespace ArcticC
                     //Run C# code and return result
                     string[][] LexeredTable = LexerCheck(SourceMainChar);
 
-                    for (int i = 0; i <= LexeredTable[0].Length - 1; i++)
+                    try
                     {
-                        Console.WriteLine("(" + LexeredTable[0][i].ToString() + ", " + LexeredTable[1][i].ToString() + ")");
+                        for (int i = 0; i <= LexeredTable[0].Length - 1; i++)
+                        {
+                            Console.WriteLine("(" + LexeredTable[0][i].ToString() + ", " + LexeredTable[1][i].ToString() + ")");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Error of C#: {0}", e);
+                        Console.ForegroundColor = ConsoleColor.White;
                     }
                 }
                 else
