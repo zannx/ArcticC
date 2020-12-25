@@ -6,7 +6,8 @@ Please note that this programming lanugage is not working yet! <br>
 <h1>Lexer</h1>
 + Working for variables. <br>
 + Working for separators. <br>
-+ Working for keywords (not all). <br>
++ Working for operators. <br>
++ Working for keywords (if, else, break, continue, case, switch, for, default and while). <br>
 <hr>
 
 
