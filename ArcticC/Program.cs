@@ -2,6 +2,8 @@
 using static ArcticC.StringCompiler.CompilerStr;
 using static ArcticC.StringCompiler.ByteArrays;
 using static ArcticC.Lexer.Lexer;
+using static ArcticC.Parser.Parser;
+using static ArcticC.Evaluator.Evaluator;
 
 namespace ArcticC
 {
@@ -14,11 +16,9 @@ namespace ArcticC
 
             //Basic variables
             string SourceMain = "";
-            string Assembly = "";
 
             while (true)
-            {
-                Console.ForegroundColor = ConsoleColor.White;
+            { 
                 string Input = Convert.ToString(Console.ReadLine());
                 SourceMain = SourceMain + Convert.ToString('\x20');
 
@@ -29,29 +29,45 @@ namespace ArcticC
                     //Run C# code and return result
                     string[][] LexeredTable = LexerCheck(SourceMainChar);
 
-                    try
+                    for (int i = 0; i <= LexeredTable[0].Length - 1; i++)
                     {
-                        for (int i = 0; i <= LexeredTable[0].Length - 1; i++)
-                        {
-                            Console.WriteLine("(" + LexeredTable[0][i].ToString() + ", " + LexeredTable[1][i].ToString() + ")");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("Error of C#: {0}", e);
-                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("(" + LexeredTable[0][i].ToString() + ", " + LexeredTable[1][i].ToString() + ")");
                     }
                 }
                 else
                 {
-                    if (SourceMain != "")
+                    if (CheckBytes(CompilerString(Input.ToLower()), run))
                     {
-                        SourceMain = SourceMain + Input;
+                        char[] SourceMainChar = SourceMain.ToCharArray();
+                        string[][] LexeredTable = LexerCheck(SourceMainChar);
+                        Console.WriteLine("");
+                        Console.WriteLine("LEXER");
+                        Console.WriteLine("--------------------------------------");
+                        Console.WriteLine("");
+                        for (int i = 0; i <= LexeredTable[0].Length - 1; i++)
+                        {
+                            Console.WriteLine("(" + LexeredTable[0][i].ToString() + ", " + LexeredTable[1][i].ToString() + ")");
+                        }
+                        Console.WriteLine("");
+                        string Parser = ParserCheck(LexeredTable);
+                        Console.WriteLine("PARSER");
+                        Console.WriteLine("--------------------------------------");
+                        Console.WriteLine(Parser);
+                        Console.WriteLine("");
+                        Console.WriteLine("OUTPUT");
+                        Console.WriteLine("--------------------------------------");
+                        EvaluatorVoid(Parser);
                     }
                     else
                     {
-                        SourceMain = Input;
+                        if (SourceMain != "")
+                        {
+                            SourceMain = SourceMain + Input;
+                        }
+                        else
+                        {
+                            SourceMain = Input;
+                        }
                     }
                 }
             }
