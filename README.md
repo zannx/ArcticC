@@ -19,13 +19,13 @@ Lexer in ArcticC creates a tokens out of a source code.
 ![lexer simple algo](imgs/LexerNew.PNG)<br>
 
 <h1>Parser</h1>
-Parser in ArcticC creates a string of actions which the evaluator is going to process task by task.<br>
+Parser in ArcticC creates a string of tasks which only the evaluator understands.<br>
 <hr>
 + Working for declaration of variables <br>
 
 
 <h1>Evaluator</h1>
-Evaluator in ArcticC process the string of parser and creates a behaviour of the tasks.<br>
+Evaluator in ArcticC processes a string of the parser and creates a behaviour out of the tasks.<br>
 <hr>
 + Working for declaration of variables <br>
 
