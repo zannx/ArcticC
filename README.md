@@ -1,7 +1,8 @@
 # ArcticC
 A simple programming language. <br>
 (Keep in mind that this programming language is still in development and it's not even close yet to be finished) <br>
-+ Declaring variables <br>
++ Declaring variables (syntax: {variablename} + '=' + <integer,decimal,boolean,string> + ';')
++ "run" function which will take the source code through lexer, parser and evaluator.
 
 ![declaring variables](https://i.gyazo.com/7b3e22e456130548fa4b5396e20cfadf.gif)<br>
 
