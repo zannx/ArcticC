@@ -12,7 +12,7 @@ namespace ArcticC.Lexer
     {
         public static string[][] LexerCheck(char[] characterarray)
         {
-            string[][] SourceAppart = new string[][] {new string[characterarray.Length], new string[characterarray.Length]};
+            string[][] SourceAppart = new string[][] { new string[characterarray.Length], new string[characterarray.Length] };
 
             int Count = 0;
             for (int i = 0; i <= characterarray.Length - 1; i++)
@@ -71,7 +71,8 @@ namespace ArcticC.Lexer
                         SourceAppart[0][Count] = "\"" + characterarray[i] + "\"";
                         SourceAppart[1][Count] = "\"\"";
                     }
-                    else {
+                    else
+                    {
                         continue;
                     }
                 }
@@ -93,7 +94,7 @@ namespace ArcticC.Lexer
                         SourceAppart[1][Count] = "\"" + NameVariable + "\"";
 
                         //Keywords
-                        if (CheckBytes(GenerateByteArray(NameVariable),IF)
+                        if (CheckBytes(GenerateByteArray(NameVariable), IF)
                             || CheckBytes(GenerateByteArray(NameVariable), WHILE)
                             || CheckBytes(GenerateByteArray(NameVariable), FOR)
                             || CheckBytes(GenerateByteArray(NameVariable), ELSE)
@@ -118,13 +119,36 @@ namespace ArcticC.Lexer
                     {
                         string Together = "\"string\"";
                         SourceAppart[0][Count] = Together;
-                        
+
                         string NameVariable = "";
                         i++;
                         while ((byte)characterarray[i] != 0x22)
                         {
                             NameVariable = NameVariable + characterarray[i];
                             i++;
+                        }
+
+                        SourceAppart[1][Count] = "\"" + NameVariable + "\"";
+                    }
+
+                    //Character
+                    if ((byte)characterarray[i] == 0x27)
+                    {
+                        string Together = "\"char\"";
+                        SourceAppart[0][Count] = Together;
+
+                        string NameVariable = "";
+                        i++;
+                        while ((byte)characterarray[i] != 0x27)
+                        {
+                            NameVariable = NameVariable + characterarray[i];
+                            i++;
+                        }
+
+                        if (NameVariable.Length > 1)
+                        {
+                            Console.WriteLine("Error: you haven't declared a character but a string in character type at: {0}", NameVariable);
+                            break;
                         }
 
                         SourceAppart[1][Count] = "\"" + NameVariable + "\"";
