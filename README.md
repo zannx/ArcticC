@@ -1,3 +1,4 @@
+[![Generic badge](https://img.shields.io/badge/build-passing-green.svg)](https://shields.io/)
 # ArcticC
 A simple programming language. <br>
 (Keep in mind that this programming language is still in development and it's not even close yet to be finished) <br>
