@@ -29,6 +29,14 @@ namespace ArcticC.Parser
                         {
                             Tree = Tree + LexeredArray[0][i].Replace("\"", string.Empty).Trim() + ":" + LexeredArray[1][i].Replace("\"", string.Empty).Trim() + "$";
                         }
+                        if (LexeredArray[0][i].Replace("\"", string.Empty).Trim() == "operator")
+                        {
+                            if (LexeredArray[1][i].Replace("\"", string.Empty).Trim() == "+")
+                            {
+                                Tree = Tree + "plus" + "$";
+                            }
+                            //Tree = Tree + LexeredArray[1][i].Replace("\"", string.Empty).Trim() + "$";
+                        }
                         i++;
                     }
                 }

@@ -16,6 +16,7 @@ namespace ArcticC.Evaluator
 
             int Count = 0;
             string Action = "";
+            int LatestVariableChange = 0;
             for (int i = 0; i <= Tree.Length - 1; i++)
             {
                 char[] ProgramArrayChar = Tree.ToCharArray();
@@ -32,6 +33,7 @@ namespace ArcticC.Evaluator
                             i++;
                         }
                         ProgramArray[0][Count] = Variable;
+                        LatestVariableChange = Count;
                         Action = "";
                     }
                     if (Action == "integer:" || Action == "string:"
@@ -41,6 +43,32 @@ namespace ArcticC.Evaluator
                         i++;
                         while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
                         {
+                            Variable = Variable + ProgramArrayChar[i];
+                            i++;
+                        }
+                        ProgramArray[1][Count] = Variable;
+                        Action = "";
+                        Count = Count + 1;
+                    }
+                    if (Action == "plus$")
+                    {
+                        string Variable = "";
+                        i++;
+                        while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
+                        {
+                            if (Variable == "integer:" || Variable == "decimal:")
+                            {
+                                string Number = "";
+                                while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
+                                {
+                                    Number = Number + ProgramArrayChar[i];
+                                    i++;
+                                }
+                                decimal PretvojenoStevilo;
+                                Decimal.TryParse(ProgramArray[1][LatestVariableChange], out PretvojenoStevilo);
+                                ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo + Convert.ToDecimal(Number));
+                                break;
+                            }
                             Variable = Variable + ProgramArrayChar[i];
                             i++;
                         }
