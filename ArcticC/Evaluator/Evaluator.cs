@@ -72,7 +72,6 @@ namespace ArcticC.Evaluator
                             Variable = Variable + ProgramArrayChar[i];
                             i++;
                         }
-                        ProgramArray[1][Count] = Variable;
                         Action = "";
                         Count = Count + 1;
                     }
