@@ -32,6 +32,14 @@ namespace ArcticC.Evaluator
                             Variable = Variable + ProgramArrayChar[i];
                             i++;
                         }
+                        for (int Counter = 0; Counter <= Count; Counter++)
+                        {
+                            if (ProgramArray[0][Counter] == Variable)
+                            {
+                                ProgramArray[0][Counter] = null;
+                                ProgramArray[1][Counter] = null;
+                            }
+                        }
                         ProgramArray[0][Count] = Variable;
                         LatestVariableChange = Count;
                         Action = "";
