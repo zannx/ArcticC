@@ -8,15 +8,15 @@ using static ArcticC.Evaluator.Evaluator;
 namespace ArcticC
 {
 
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static string[][] LexeredTable;
+        public static void Main(string[] args)
         {
             Console.Title = "ArcticC";
 
             //Basic variables
             string SourceMain = "";
-
             while (true)
             {
                 string Input = Convert.ToString(Console.ReadLine());
@@ -29,7 +29,7 @@ namespace ArcticC
                         char[] SourceMainChar = SourceMain.ToCharArray();
 
                         //Run C# code and return result
-                        string[][] LexeredTable = LexerCheck(SourceMainChar);
+                        LexeredTable = LexerCheck(SourceMainChar);
 
                         for (int i = 0; i <= LexeredTable[0].Length - 1; i++)
                         {
@@ -43,12 +43,12 @@ namespace ArcticC
                 }
                 else
                 {
-                    try
-                    {
+                    //try
+                    //{
                         if (CheckBytes(CompilerString(Input.ToLower()), run))
                         {
                             char[] SourceMainChar = SourceMain.ToCharArray();
-                            string[][] LexeredTable = LexerCheck(SourceMainChar);
+                            LexeredTable = LexerCheck(SourceMainChar);
                             Console.WriteLine("LEXER");
                             Console.WriteLine("--------------------------------------");
                             Console.WriteLine("");
@@ -77,11 +77,11 @@ namespace ArcticC
                                 SourceMain = Input;
                             }
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("Error C#: ", e);
-                    }
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    Console.WriteLine("Error C#: ", e);
+                    //}
                 }
             }
         }
