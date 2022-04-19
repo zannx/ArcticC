@@ -48,7 +48,7 @@ namespace ArcticC.Parser
                     if (LexeredArray[1][i + 3].Replace("\"", string.Empty).Trim() == "==")
                     {
                         Tree = Tree + "ce" + "$" + LexeredArray[1][i + 2].Replace("\"", string.Empty).Trim() + "$" + "equalsequals" + "$" + LexeredArray[1][i + 4].Replace("\"", string.Empty).Trim() + "$";
-                        Tree = Tree + "[";
+                        //Tree = Tree + "[";
                         //var JeStevilo = decimal.TryParse(LexeredArray[1][i + 2], out _);
                         //var JeStevilo2 = decimal.TryParse(LexeredArray[1][i + 4], out _);
                         //if (JeStevilo && JeStevilo2)
@@ -115,6 +115,7 @@ namespace ArcticC.Parser
                         //        }
                         //    }
                         //}
+                        i = i + 5;
                     }
                 }
                 if (LexeredArray[1][i].Replace("\"", string.Empty).Trim() == "else")
