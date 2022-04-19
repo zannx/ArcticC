@@ -19,7 +19,7 @@ namespace ArcticC.Evaluator
             int Count = 0;
             string Action = "";
             int LatestVariableChange = 0;
-            bool ZadnjiBool;
+            bool ZadnjiBool = false;
             for (int i = 0; i <= Tree.Length - 1; i++)
             {
                 char[] ProgramArrayChar = Tree.ToCharArray();
@@ -167,15 +167,48 @@ namespace ArcticC.Evaluator
                                 else
                                 {
                                     ZadnjiBool = false;
-                                    while (ProgramArrayChar[i] != ']')
+                                    int ZacetekOklepaj = 0;
+                                    int KonecOklepaj = 0;
+                                    while (true)
                                     {
                                         i = i + 1;
+                                        if (ProgramArrayChar[i] == '[')
+                                        {
+                                            ZacetekOklepaj= ZacetekOklepaj+1;
+                                        }
+                                        if (ProgramArrayChar[i] == ']')
+                                        {
+                                            KonecOklepaj= KonecOklepaj+1;
+                                            if(ZacetekOklepaj==KonecOklepaj)
+                                            {
+                                                //i = i + 1;
+                                                break;
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                         Action = "";
                         //Count = Count + 1;
+                    }
+                    if (Action == "drugace$") {
+                        if (ZadnjiBool)
+                        {
+                            while (ProgramArrayChar[i] != ']')
+                            {
+                                i = i + 1;
+                            }
+                            ZadnjiBool = false;
+                        }
+                        else
+                        {
+                            //while (ProgramArrayChar[i] != '[')
+                            //{
+                                i = i + 1;
+                            //}
+                        }
+                        Action = "";
                     }
                 }
             }
