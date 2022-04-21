@@ -140,6 +140,9 @@ namespace ArcticC.Parser
                 {
                     Tree = Tree + "[";
                 }
+                if (LexeredArray[1][i].Replace("\"", string.Empty).Trim() == "izpisi") {
+                    Tree = Tree + "izpisi:" + LexeredArray[1][i + 2].Replace("\"", string.Empty).Trim() + "$";
+                }
             }
             return Tree;
         }
