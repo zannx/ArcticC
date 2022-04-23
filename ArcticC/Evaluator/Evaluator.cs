@@ -15,23 +15,12 @@ namespace ArcticC.Evaluator
             return Array.IndexOf(array, item);
         }
     }
-    static class ArrayExtensions
-    {
-        public static void ReplaceAll(this string[] items, string oldValue, string newValue)
-        {
-            for (int index = 0; index < items.Length; index++)
-                if (items[index] == oldValue)
-                    items[index] = newValue;
-        }
-    }
     public class Evaluator
     {
         //Just for a test purpose array
         public static string[][] ProgramArray = { new string[10], new string[10] };
         public static void EvaluatorVoid(string Tree)
         {
-            LexeredTable[0].ReplaceAll("\"", "");
-            LexeredTable[1].ReplaceAll("\"", "");
             int Count = 0;
             string Action = "";
             int LatestVariableChange = 0;
@@ -94,7 +83,6 @@ namespace ArcticC.Evaluator
                             ProgramArray[1][Count] = ProgramArray[1][KoncnoStevilo];
                         }
                         Action = "";
-                        //Count = Count + 1;
                     }
                     if (Action == "plus$")
                     {
@@ -119,7 +107,6 @@ namespace ArcticC.Evaluator
                             i++;
                         }
                         Action = "";
-                        //Count = Count + 1;
                     }
                     if (Action == "ce$")
                     {
@@ -215,7 +202,6 @@ namespace ArcticC.Evaluator
 
                                 if (ProgramArray[1][s] == ProgramArray[1][s2])
                                 {
-                                    //i = i + 5;
                                     i++;
                                     ZadnjiBool = true;
                                 }
@@ -236,7 +222,6 @@ namespace ArcticC.Evaluator
                                             KonecOklepaj= KonecOklepaj+1;
                                             if(ZacetekOklepaj==KonecOklepaj)
                                             {
-                                                //i = i + 1;
                                                 break;
                                             }
                                         }
@@ -245,7 +230,6 @@ namespace ArcticC.Evaluator
                             }
                         }
                         Action = "";
-                        //Count = Count + 1;
                     }
                     if (Action == "drugace$") {
                         if (ZadnjiBool)
@@ -258,10 +242,7 @@ namespace ArcticC.Evaluator
                         }
                         else
                         {
-                            //while (ProgramArrayChar[i] != '[')
-                            //{
-                                i = i + 1;
-                            //}
+                           i = i + 1;
                         }
                         Action = "";
                     }
@@ -294,10 +275,6 @@ namespace ArcticC.Evaluator
             }
             ProgramArray[0] = ProgramArray[0].Where(x => !string.IsNullOrEmpty(x)).ToArray();
             ProgramArray[1] = ProgramArray[1].Where(x => !string.IsNullOrEmpty(x)).ToArray();
-            //for (int i = 0; i <= ProgramArray[0].Length - 1; i++)
-            //{
-            //    Console.WriteLine(ProgramArray[0][i] + " >>> " + ProgramArray[1][i]);
-            //}
         }
     }
 }
