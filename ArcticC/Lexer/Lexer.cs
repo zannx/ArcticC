@@ -100,7 +100,8 @@ namespace ArcticC.Lexer
                             || CheckBytes(GenerateByteArray(NameVariable), ELSE)
                             || CheckBytes(GenerateByteArray(NameVariable), BREAK)
                             || CheckBytes(GenerateByteArray(NameVariable), SWITCH)
-                            || CheckBytes(GenerateByteArray(NameVariable), CONTINUE))
+                            || CheckBytes(GenerateByteArray(NameVariable), CONTINUE)
+                            || CheckBytes(GenerateByteArray(NameVariable), FUNC))
                         {
                             SourceAppart[0][Count] = "\"keyword\"";
                         }

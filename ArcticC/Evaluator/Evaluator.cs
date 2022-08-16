@@ -5,6 +5,7 @@ using System.Linq;
 using static ArcticC.Parser.Parser;
 using static ArcticC.Lexer.Lexer;
 using static ArcticC.Program;
+using System.Threading;
 
 namespace ArcticC.Evaluator
 {
@@ -19,14 +20,36 @@ namespace ArcticC.Evaluator
     {
         //Just for a test purpose array
         public static string[][] ProgramArray = { new string[10], new string[10] };
+        public static string[][] FunctionsArray = { new string[10], new string[10] };
         public static void EvaluatorVoid(string Tree)
         {
-            int Count = 0;
+            int Count = -1;
+            int FunctionsCount = 0;
+            int FunctionsCountend = 0;
             string Action = "";
             int LatestVariableChange = 0;
+            int ProgramStayed = 0;
+            bool InFunction = false;
             bool ZadnjiBool = false;
+            string FunctionNamePublic = "";
             for (int i = 0; i <= Tree.Length - 1; i++)
             {
+                if(InFunction)
+                {
+                    if (i == Convert.ToInt32(FunctionsArray[1][FunctionsArray[0].findIndex(FunctionNamePublic+"end")]))
+                    {
+                        InFunction = false;
+                        i = ProgramStayed;
+                    }
+                    if(Action=="func_call")
+                    {
+                        //break;
+                    }
+                }
+                if (i > Tree.Length - 1)
+                {
+                    break;
+                }
                 char[] ProgramArrayChar = Tree.ToCharArray();
                 Action = Action + ProgramArrayChar[i];
                 Action = Action.Replace("]", "");
@@ -41,17 +64,24 @@ namespace ArcticC.Evaluator
                             Variable = Variable + ProgramArrayChar[i];
                             i++;
                         }
-                        for (int Counter = 0; Counter <= Count; Counter++)
+                        for (int Counter = 0; Counter <= ProgramArray[0].Length-1; Counter++)
                         {
                             if (ProgramArray[0][Counter] == Variable)
                             {
                                 ProgramArray[0][Counter] = null;
-                                ProgramArray[1][Counter] = null;
+                                //ProgramArray[1][Counter] = null;
                             }
                         }
-                        Count = Count + 1;
+                        Count = ProgramArray[0].findIndex(null);
+                      
+                        //Count = Count + 1;
+                        if (Count > 9)
+                        {
+                            break;
+                        }
                         ProgramArray[0][Count] = Variable;
                         LatestVariableChange = Count;
+                        //Count = Count + 1;
                         Action = "";
                     }
                     if (Action == "integer:" || Action == "string:"
@@ -74,7 +104,7 @@ namespace ArcticC.Evaluator
                             int KoncnoStevilo = 0;
                             for (int l = 0; l <= Count; l++)
                             {
-                                if (ProgramArray[0][Count] == Variable)
+                                if (ProgramArray[0][l] == Variable)
                                 {
                                     KoncnoStevilo = l;
                                     break;
@@ -105,6 +135,147 @@ namespace ArcticC.Evaluator
                             }
                             Variable = Variable + ProgramArrayChar[i];
                             i++;
+                        }
+                        Action = "";
+                    }
+                    //Console.WriteLine(Action);
+                    if (Action == "func$")
+                    {
+                        string FunctionName = "";
+                        i++;
+                        while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
+                        {
+                            FunctionName = FunctionName + ProgramArrayChar[i];
+                            i++;
+                        }
+                        FunctionsArray[0][FunctionsCount] = FunctionName;
+                        //FunctionsCount++;
+                        int ZacetekOklepaj = 0;
+                        int KonecOklepaj = 0;
+                        bool FirstTime = false;
+                        while (true)
+                        {
+                            i = i + 1;
+                            if (ProgramArrayChar[i] == '[')
+                            {
+                                if (!FirstTime)
+                                {
+                                    FunctionsArray[1][FunctionsCount] = i.ToString();
+                                    ZacetekOklepaj = ZacetekOklepaj + 1;
+                                    FirstTime = true;
+                                }
+                                else {
+                                    ZacetekOklepaj = ZacetekOklepaj + 1;
+                                }
+                            }
+                            if (ProgramArrayChar[i] == ']')
+                            {
+                                KonecOklepaj = KonecOklepaj + 1;
+                                if (ZacetekOklepaj == KonecOklepaj)
+                                {
+                                    //FunctionsCount++;
+                                    FunctionsCountend = FunctionsCount + 1;
+                                    FunctionsArray[0][FunctionsCountend] = FunctionName+"end";
+                                    FunctionsArray[1][FunctionsCountend] = i.ToString();
+                                    break;
+                                }
+                            }
+                        }
+                        FunctionsCount = FunctionsCountend;
+                        FunctionsCount++;
+                        Action = "";
+                    }
+                    if (Action == "func_call$")
+                    {
+                        FunctionNamePublic = "";
+                        i++;
+                        while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
+                        {
+                            FunctionNamePublic = FunctionNamePublic + ProgramArrayChar[i];
+                            i++;
+                        }
+                        if (!InFunction)
+                        {
+                            ProgramStayed = i + 1;
+                        }
+
+                        int Position = 0;
+
+                        int Counter = 0;
+                        while (true)
+                        {
+                            string NameVariable = "";
+                            if (ProgramArrayChar[Counter] == '$')
+                            {
+                                Counter++;
+                            }
+                            while (ProgramArrayChar[Counter] != '$' && i <= Tree.Length - 1)
+                            {
+                                NameVariable = NameVariable + ProgramArrayChar[Counter];
+                                Counter++;
+                            }
+                            if (NameVariable == FunctionNamePublic)
+                            {
+                                Position = Counter;
+                                break;
+                            }
+                        }
+
+                        while (true)
+                        {
+                            string NameVariable = "";
+                            if (ProgramArrayChar[Position] == '$')
+                            {
+                                Position++;
+                            }
+                            while (ProgramArrayChar[Position] != '$' && i <= Tree.Length - 1)
+                            {
+                                if(ProgramArrayChar[Position] == '[')
+                                {
+                                    break;
+                                }
+                                NameVariable = NameVariable + ProgramArrayChar[Position];
+                                Position++;
+                            }
+
+                            if (ProgramArrayChar[Position] == '[')
+                            {
+                                i = Convert.ToInt32(FunctionsArray[1][FunctionsArray[0].findIndex(FunctionNamePublic)]);
+                                InFunction = true;
+                                break;
+                            }
+
+                            string Value = "";
+                            i++;
+                            if (i == Tree.Length)
+                            {
+                                i = Convert.ToInt32(FunctionsArray[1][FunctionsArray[0].findIndex(FunctionNamePublic)]);
+                                InFunction = true;
+                                break;
+                            }
+                            while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
+                            {
+                                Value = Value + ProgramArrayChar[i];
+                                i++;
+                            }
+
+                            for (int CounterD = 0; CounterD <= ProgramArray[0].Length - 1; CounterD++)
+                            {
+                                if (ProgramArray[0][CounterD] == null)
+                                {
+                                    ProgramArray[0][CounterD] = NameVariable;
+                                    ProgramArray[1][CounterD] = Value;
+                                    break;
+                                }
+                            }
+
+                            var JeStevilo = decimal.TryParse(Value, out _);
+                            if (!JeStevilo)
+                            {
+                                i = Convert.ToInt32(FunctionsArray[1][FunctionsArray[0].findIndex(FunctionNamePublic)]);
+                                InFunction = true;
+                                break;
+                            }
                         }
                         Action = "";
                     }
@@ -226,6 +397,8 @@ namespace ArcticC.Evaluator
                                             }
                                         }
                                     }
+                                    //ProgramArray[0][s2] = null;
+                                    //ProgramArray[1][s2] = null;
                                 }
                             }
                         }
@@ -237,6 +410,11 @@ namespace ArcticC.Evaluator
                             while (ProgramArrayChar[i] != ']')
                             {
                                 i = i + 1;
+                            }
+                            if(InFunction)
+                            {
+                                i = ProgramStayed;
+                                InFunction = false;
                             }
                             ZadnjiBool = false;
                         }
@@ -271,6 +449,10 @@ namespace ArcticC.Evaluator
                         }
                         Action = "";
                     }
+                }
+                if (Action.Contains("$"))
+                {
+                    Action = "";
                 }
             }
             ProgramArray[0] = ProgramArray[0].Where(x => !string.IsNullOrEmpty(x)).ToArray();

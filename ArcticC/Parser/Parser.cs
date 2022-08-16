@@ -53,6 +53,50 @@ namespace ArcticC.Parser
                 {
                     Tree = Tree + "drugace" + "$";
                 }
+
+                //FUNCTIONS
+                if (LexeredArray[1][i].Replace("\"", string.Empty).Trim() == "func")
+                {
+                    Tree = Tree + "func" + "$" + LexeredArray[1][i + 1].Replace("\"", string.Empty).Trim() + "$";
+                    int Count = 3;
+                    while (LexeredArray[1][i + Count].Replace("\"", string.Empty).Trim() != ")")
+                    {
+                        Tree = Tree + LexeredArray[1][i + Count].Replace("\"", string.Empty).Trim() + "$";
+                        Count++;
+                    }
+                }
+                if (LexeredArray[0][i].Replace("\"", string.Empty).Trim() == "identifier" && LexeredArray[1][i].Replace("\"", string.Empty).Trim() != "izpisi") {
+                    int CountOne = 2;
+                    while (LexeredArray[1][i + CountOne].Replace("\"", string.Empty).Trim() != ")")
+                    {
+                        //Console.WriteLine(LexeredArray[1][i + CountOne].Replace("\"", string.Empty).Trim());
+                        CountOne++;
+                        if ((i + CountOne) > LexeredArray[0].Length - 1)
+                        {
+                            break;
+                        }
+                    }
+                    if ((i + CountOne) > LexeredArray[0].Length - 1)
+                    {
+                        break;
+                    }
+                    if (LexeredArray[1][i + CountOne + 1].Replace("\"", string.Empty).Trim() == ";")
+                    {
+
+                        if (LexeredArray[0][i + 1].Replace("\"", string.Empty).Trim() == "seperator" && LexeredArray[1][i + 1].Replace("\"", string.Empty).Trim() == "(" && LexeredArray[1][i].Replace("\"", string.Empty).Trim() != "izpisi")
+                        {
+                            Tree = Tree + "func_call" + "$" + LexeredArray[1][i].Replace("\"", string.Empty).Trim() + "$";
+                            int Count = 2;
+                            while (LexeredArray[1][i + Count].Replace("\"", string.Empty).Trim() != ")")
+                            {
+                                Tree = Tree + LexeredArray[1][i + Count].Replace("\"", string.Empty).Trim() + "$";
+                                Count++;
+                            }
+                        }
+                    }
+                }
+
+                //BRACKETS
                 if (LexeredArray[1][i].Replace("\"", string.Empty).Trim() == "}") {
                     Tree = Tree + "]";
                 }
