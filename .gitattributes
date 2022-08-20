@@ -1,9 +1,7 @@
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
-* linguist-vendored
-*.csharp linguist-vendored=true
-*.arc linguist-vendored=true
+*.* linguist-language=ArcticC
 
 ###############################################################################
 # Set default behavior for command prompt diff.
