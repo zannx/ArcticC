@@ -1,7 +1,7 @@
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
-*.csharp linguist-detectable=true
+*.csharp linguist-detectable=false
 *.arc linguist-detectable=true
 
 ###############################################################################
