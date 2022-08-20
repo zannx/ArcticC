@@ -3,7 +3,6 @@
 ###############################################################################
 app/* linguist-documentation=false
 app/* linguist-vendored
-*.arc linguist-language=ArcticC
 
 ###############################################################################
 # Set default behavior for command prompt diff.
