@@ -1,0 +1,25 @@
+Stevilo = 0;
+Pain=1;
+hm=0;
+
+func Recursion(){
+  if(Pain==4){
+   izpisi("The end!");
+   izpisi("\n");
+   izpisi("Variable Stevilo has a value of: ");
+   izpisi(Stevilo);
+   izpisi("\n");
+   izpisi("HM is equals to: ");
+   izpisi(hm);
+ } else {
+  Pain = Pain + 1;
+  Stevilo = Stevilo - 1;
+  hm = hm + 2;
+  izpisi("Pain has a value of: ");
+  izpisi(Pain);
+  izpisi("\n");
+  Recursion();
+ } 
+}
+
+Recursion();
