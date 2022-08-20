@@ -2,7 +2,7 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * linguist-vendored
-*.csharp linguist-vendored=false
+*.csharp linguist-vendored=true
 *.arc linguist-vendored=true
 
 ###############################################################################
