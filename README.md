@@ -6,7 +6,7 @@ It is using source-to-source compiler, translating source code from ArcticC (.ar
 
 # Building
 
-To build ArcticC, simple clone it and build:
+To build ArcticC, simple clone it and build it:
 ```bash
 $ git clone https://github.com/zannx/ArcticC.git
 $ cd ArcticC
@@ -14,7 +14,7 @@ $ dotnet restore
 $ dotnet build
 ```
 Make sure that you are inside ArcticC folder in which is located the .sln file. Then run the following dotnet commands written above. <br>
-Once you build it inside console its going to be written the location of the folder which contains .exe file. <br>
+Once you build it, inside console its going to be written the location of the folder which contains .exe file. <br>
 
 
 # Functionality 
