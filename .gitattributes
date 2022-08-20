@@ -1,7 +1,8 @@
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
-*.arc linguist-language=ArcticC
+app/* linguist-documentation=false
+app/* linguist-vendored
 
 ###############################################################################
 # Set default behavior for command prompt diff.
