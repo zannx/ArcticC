@@ -3,6 +3,7 @@
 ###############################################################################
 * linguist-vendored
 *.csharp linguist-vendored=false
+*.arc linguist-vendored=true
 
 ###############################################################################
 # Set default behavior for command prompt diff.
