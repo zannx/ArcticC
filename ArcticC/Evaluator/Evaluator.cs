@@ -19,8 +19,8 @@ namespace ArcticC.Evaluator
     public class Evaluator
     {
         //Just for a test purpose array
-        public static string[][] ProgramArray = { new string[10], new string[10] };
-        public static string[][] FunctionsArray = { new string[10], new string[10] };
+        public static string[][] ProgramArray = { new string[100], new string[100] };
+        public static string[][] FunctionsArray = { new string[100], new string[100] };
         public static void EvaluatorVoid(string Tree)
         {
             int Count = -1;
@@ -29,30 +29,21 @@ namespace ArcticC.Evaluator
             string Action = "";
             int LatestVariableChange = 0;
             int ProgramStayed = 0;
-            bool InFunction = false;
             bool ZadnjiBool = false;
             string FunctionNamePublic = "";
+            Stack<int> x = new Stack<int>();
+
             for (int i = 0; i <= Tree.Length - 1; i++)
             {
-                if(InFunction)
-                {
-                    if (i == Convert.ToInt32(FunctionsArray[1][FunctionsArray[0].findIndex(FunctionNamePublic+"end")]))
-                    {
-                        InFunction = false;
-                        i = ProgramStayed;
-                    }
-                    if(Action=="func_call")
-                    {
-                        //break;
-                    }
-                }
-                if (i > Tree.Length - 1)
-                {
-                    break;
-                }
                 char[] ProgramArrayChar = Tree.ToCharArray();
                 Action = Action + ProgramArrayChar[i];
                 Action = Action.Replace("]", "");
+                Action = Action.Replace("[", "");
+               
+                if (FunctionNamePublic != "" && i == Convert.ToInt32(FunctionsArray[1][FunctionsArray[0].findIndex(FunctionNamePublic + "end")]))
+                {
+                    i = x.Pop();
+                }
                 if (ProgramArrayChar[i] == '$' || ProgramArrayChar[i] == ':')
                 {
                     if (Action == "assign$")
@@ -73,15 +64,8 @@ namespace ArcticC.Evaluator
                             }
                         }
                         Count = ProgramArray[0].findIndex(null);
-                      
-                        //Count = Count + 1;
-                        if (Count > 9)
-                        {
-                            break;
-                        }
                         ProgramArray[0][Count] = Variable;
                         LatestVariableChange = Count;
-                        //Count = Count + 1;
                         Action = "";
                     }
                     if (Action == "integer:" || Action == "string:"
@@ -130,7 +114,18 @@ namespace ArcticC.Evaluator
                                 }
                                 decimal PretvojenoStevilo;
                                 Decimal.TryParse(ProgramArray[1][LatestVariableChange], out PretvojenoStevilo);
-                                ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo + Convert.ToDecimal(Number));
+
+                                decimal PretvojenoSteviloDve;
+
+                                if (Decimal.TryParse(Number, out PretvojenoSteviloDve))
+                                {
+                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo + Convert.ToDecimal(Number));
+                                }
+                                else {
+                                    string SteviloVArrayu = ProgramArray[1][ProgramArray[0].findIndex(Number)];
+                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo + Convert.ToDecimal(SteviloVArrayu));
+                                }
+                                
                                 break;
                             }
                             Variable = Variable + ProgramArrayChar[i];
@@ -138,7 +133,42 @@ namespace ArcticC.Evaluator
                         }
                         Action = "";
                     }
-                    //Console.WriteLine(Action);
+                    if (Action == "minus$")
+                    {
+                        string Variable = "";
+                        i++;
+                        while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
+                        {
+                            if (Variable == "integer:" || Variable == "decimal:" || Variable == "identifier:")
+                            {
+                                string Number = "";
+                                while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
+                                {
+                                    Number = Number + ProgramArrayChar[i];
+                                    i++;
+                                }
+                                decimal PretvojenoStevilo;
+                                Decimal.TryParse(ProgramArray[1][LatestVariableChange], out PretvojenoStevilo);
+
+                                decimal PretvojenoSteviloDve;
+
+                                if (Decimal.TryParse(Number, out PretvojenoSteviloDve))
+                                {
+                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo - Convert.ToDecimal(Number));
+                                }
+                                else
+                                {
+                                    string SteviloVArrayu = ProgramArray[1][ProgramArray[0].findIndex(Number)];
+                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo - Convert.ToDecimal(SteviloVArrayu));
+                                }
+
+                                break;
+                            }
+                            Variable = Variable + ProgramArrayChar[i];
+                            i++;
+                        }
+                        Action = "";
+                    }
                     if (Action == "func$")
                     {
                         string FunctionName = "";
@@ -148,41 +178,44 @@ namespace ArcticC.Evaluator
                             FunctionName = FunctionName + ProgramArrayChar[i];
                             i++;
                         }
-                        FunctionsArray[0][FunctionsCount] = FunctionName;
-                        //FunctionsCount++;
-                        int ZacetekOklepaj = 0;
-                        int KonecOklepaj = 0;
-                        bool FirstTime = false;
-                        while (true)
+                        bool exists = Array.Exists(FunctionsArray[0], el => el == FunctionName); 
+                        if (exists==false)
                         {
-                            i = i + 1;
-                            if (ProgramArrayChar[i] == '[')
+                            FunctionsArray[0][FunctionsCount] = FunctionName;
+                            //FunctionsCount++;
+                            int ZacetekOklepaj = 0;
+                            int KonecOklepaj = 0;
+                            bool FirstTime = false;
+                            while (true)
                             {
-                                if (!FirstTime)
+                                i = i + 1;
+                                if (ProgramArrayChar[i] == '[')
                                 {
-                                    FunctionsArray[1][FunctionsCount] = i.ToString();
-                                    ZacetekOklepaj = ZacetekOklepaj + 1;
-                                    FirstTime = true;
+                                    if (!FirstTime)
+                                    {
+                                        FunctionsArray[1][FunctionsCount] = i.ToString();
+                                        ZacetekOklepaj = ZacetekOklepaj + 1;
+                                        FirstTime = true;
+                                    }
+                                    else {
+                                        ZacetekOklepaj = ZacetekOklepaj + 1;
+                                    }
                                 }
-                                else {
-                                    ZacetekOklepaj = ZacetekOklepaj + 1;
+                                if (ProgramArrayChar[i] == ']')
+                                {
+                                    KonecOklepaj = KonecOklepaj + 1;
+                                    if (ZacetekOklepaj == KonecOklepaj)
+                                    {
+                                        FunctionsCountend = FunctionsCount + 1;
+                                        FunctionsArray[0][FunctionsCountend] = FunctionName+"end";
+                                        FunctionsArray[1][FunctionsCountend] = Convert.ToString(i);
+                                        break;
+                                    }
                                 }
                             }
-                            if (ProgramArrayChar[i] == ']')
-                            {
-                                KonecOklepaj = KonecOklepaj + 1;
-                                if (ZacetekOklepaj == KonecOklepaj)
-                                {
-                                    //FunctionsCount++;
-                                    FunctionsCountend = FunctionsCount + 1;
-                                    FunctionsArray[0][FunctionsCountend] = FunctionName+"end";
-                                    FunctionsArray[1][FunctionsCountend] = i.ToString();
-                                    break;
-                                }
-                            }
+                            FunctionsCount = FunctionsCountend;
+                            FunctionsCount++;
                         }
-                        FunctionsCount = FunctionsCountend;
-                        FunctionsCount++;
                         Action = "";
                     }
                     if (Action == "func_call$")
@@ -194,10 +227,9 @@ namespace ArcticC.Evaluator
                             FunctionNamePublic = FunctionNamePublic + ProgramArrayChar[i];
                             i++;
                         }
-                        if (!InFunction)
-                        {
-                            ProgramStayed = i + 1;
-                        }
+                        ProgramStayed = i;
+
+                        x.Push(i); //Magic
 
                         int Position = 0;
 
@@ -230,7 +262,7 @@ namespace ArcticC.Evaluator
                             }
                             while (ProgramArrayChar[Position] != '$' && i <= Tree.Length - 1)
                             {
-                                if(ProgramArrayChar[Position] == '[')
+                                if (ProgramArrayChar[Position] == '[')
                                 {
                                     break;
                                 }
@@ -241,7 +273,6 @@ namespace ArcticC.Evaluator
                             if (ProgramArrayChar[Position] == '[')
                             {
                                 i = Convert.ToInt32(FunctionsArray[1][FunctionsArray[0].findIndex(FunctionNamePublic)]);
-                                InFunction = true;
                                 break;
                             }
 
@@ -250,7 +281,7 @@ namespace ArcticC.Evaluator
                             if (i == Tree.Length)
                             {
                                 i = Convert.ToInt32(FunctionsArray[1][FunctionsArray[0].findIndex(FunctionNamePublic)]);
-                                InFunction = true;
+                                //InFunction = true;
                                 break;
                             }
                             while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
@@ -273,7 +304,6 @@ namespace ArcticC.Evaluator
                             if (!JeStevilo)
                             {
                                 i = Convert.ToInt32(FunctionsArray[1][FunctionsArray[0].findIndex(FunctionNamePublic)]);
-                                InFunction = true;
                                 break;
                             }
                         }
@@ -314,7 +344,6 @@ namespace ArcticC.Evaluator
                             {
                                 if (JeStevilo == JeStevilo2)
                                 {
-                                    i = i + 1;
                                     ZadnjiBool = true;
                                 }
                                 else
@@ -334,7 +363,6 @@ namespace ArcticC.Evaluator
                                             KonecOklepaj = KonecOklepaj + 1;
                                             if (ZacetekOklepaj == KonecOklepaj)
                                             {
-                                                //i = i + 1;
                                                 break;
                                             }
                                         }
@@ -369,6 +397,15 @@ namespace ArcticC.Evaluator
                                         ProgramArray[1][s2] = Variable2;
                                         break;
                                     }
+                                    else {
+                                        if (Variable2 == "false" || Variable2 == "true")
+                                        {
+                                            s2 = ProgramArray[0].findIndex(null);
+                                            ProgramArray[0][s2] = Variable2;
+                                            ProgramArray[1][s2] = Variable2;
+                                            break;
+                                        }
+                                    }
                                 }
 
                                 if (ProgramArray[1][s] == ProgramArray[1][s2])
@@ -397,8 +434,6 @@ namespace ArcticC.Evaluator
                                             }
                                         }
                                     }
-                                    //ProgramArray[0][s2] = null;
-                                    //ProgramArray[1][s2] = null;
                                 }
                             }
                         }
@@ -411,10 +446,13 @@ namespace ArcticC.Evaluator
                             {
                                 i = i + 1;
                             }
-                            if(InFunction)
+                            while (ProgramArrayChar[i] == ']')
                             {
-                                i = ProgramStayed;
-                                InFunction = false;
+                                if (i == Convert.ToInt32(FunctionsArray[1][FunctionsArray[0].findIndex(FunctionNamePublic + "end")])-1)
+                                {
+                                    break;
+                                }
+                                i = i + 1;
                             }
                             ZadnjiBool = false;
                         }
@@ -452,6 +490,7 @@ namespace ArcticC.Evaluator
                 }
                 if (Action.Contains("$"))
                 {
+                    //Console.WriteLine(Action + " " + i.ToString());
                     Action = "";
                 }
             }

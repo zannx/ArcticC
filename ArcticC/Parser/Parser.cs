@@ -29,13 +29,17 @@ namespace ArcticC.Parser
                         || LexeredArray[0][i].Replace("\"", string.Empty).Trim() == "decimal" || LexeredArray[0][i].Replace("\"", string.Empty).Trim() == "boolean"
                         || LexeredArray[0][i].Replace("\"", string.Empty).Trim() == "identifier")
                         {
-                            Tree = Tree + LexeredArray[0][i].Replace("\"", string.Empty).Trim() + ":" + LexeredArray[1][i].Replace("\"", string.Empty).Trim() + "$";
+                          Tree = Tree + LexeredArray[0][i].Replace("\"", string.Empty).Trim() + ":" + LexeredArray[1][i].Replace("\"", string.Empty).Trim() + "$";
                         }
                         if (LexeredArray[0][i].Replace("\"", string.Empty).Trim() == "operator")
                         {
                             if (LexeredArray[1][i].Replace("\"", string.Empty).Trim() == "+")
                             {
                                 Tree = Tree + "plus" + "$";
+                            }
+                            if (LexeredArray[1][i].Replace("\"", string.Empty).Trim() == "-")
+                            {
+                                Tree = Tree + "minus" + "$";
                             }
                         }
                         i++;
@@ -105,7 +109,7 @@ namespace ArcticC.Parser
                     Tree = Tree + "[";
                 }
                 if (LexeredArray[1][i].Replace("\"", string.Empty).Trim() == "izpisi") {
-                    Tree = Tree + "izpisi:" + LexeredArray[1][i + 2].Replace("\"", string.Empty).Trim() + "$";
+                    Tree = Tree + "izpisi:" + LexeredArray[1][i + 2].Replace("\"", string.Empty) + "$";
                 }
             }
             return Tree;
