@@ -1,4 +1,4 @@
-[![Generic badge](https://img.shields.io/badge/build-passing-green.svg)](https://shields.io/) [![HitCount](https://hits.dwyl.com/zannx/ArcticC.svg?style=flat-square)](http://hits.dwyl.com/zannx/ArcticC)
+[![Generic badge](https://img.shields.io/badge/build-passing-green.svg)](https://shields.io/)
 # ArcticC
 A simple programming language. <br>
 It is using source-to-source compiler, translating source code from ArcticC (.arc filetype) to C#. <br>
