@@ -6,6 +6,7 @@ using static ArcticC.Parser.Parser;
 using static ArcticC.Lexer.Lexer;
 using static ArcticC.Program;
 using System.Threading;
+using System.Globalization;
 
 namespace ArcticC.Evaluator
 {
@@ -113,17 +114,18 @@ namespace ArcticC.Evaluator
                                     i++;
                                 }
                                 decimal PretvojenoStevilo;
-                                Decimal.TryParse(ProgramArray[1][LatestVariableChange], out PretvojenoStevilo);
+                                Decimal.TryParse(ProgramArray[1][LatestVariableChange], System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out PretvojenoStevilo);
+    
 
                                 decimal PretvojenoSteviloDve;
 
-                                if (Decimal.TryParse(Number, out PretvojenoSteviloDve))
+                                if (Decimal.TryParse(Number, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out PretvojenoSteviloDve))
                                 {
-                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo + Convert.ToDecimal(Number));
+                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo + Convert.ToDecimal(Number, CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
                                 }
                                 else {
                                     string SteviloVArrayu = ProgramArray[1][ProgramArray[0].findIndex(Number)];
-                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo + Convert.ToDecimal(SteviloVArrayu));
+                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo + Convert.ToDecimal(SteviloVArrayu, CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
                                 }
                                 
                                 break;
@@ -295,7 +297,13 @@ namespace ArcticC.Evaluator
                                 if (ProgramArray[0][CounterD] == null)
                                 {
                                     ProgramArray[0][CounterD] = NameVariable;
-                                    ProgramArray[1][CounterD] = Value;
+                                    if (Array.Exists(ProgramArray[0], el => el == Value))
+                                    {
+                                        ProgramArray[1][CounterD] = ProgramArray[1][ProgramArray[0].findIndex(Value)]; 
+                                    } else
+                                    {
+                                        ProgramArray[1][CounterD] = Value;
+                                    }
                                     break;
                                 }
                             }

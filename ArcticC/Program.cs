@@ -47,6 +47,8 @@ namespace ArcticC
                     //{
                         if (CheckBytes(CompilerString(Input.ToLower()), run))
                         {
+                            var watch = new System.Diagnostics.Stopwatch();
+                            watch.Start();
                             char[] SourceMainChar = SourceMain.ToCharArray();
                             LexeredTable = LexerCheck(SourceMainChar);
                             Console.WriteLine("LEXER");
@@ -65,6 +67,9 @@ namespace ArcticC
                             Console.WriteLine("OUTPUT");
                             Console.WriteLine("--------------------------------------");
                             EvaluatorVoid(Parser);
+                            Console.WriteLine("--------------------------------------");
+                            watch.Stop();
+                            Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
                         }
                         else
                         {
