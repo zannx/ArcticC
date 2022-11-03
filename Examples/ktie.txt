@@ -1,0 +1,92 @@
+SteviloZvezd = 1;
+SteviloPresledkov = 3;
+Vrstice=0;
+
+StevecEna = 0;
+func PresledkiEna(){
+  if(StevecEna==SteviloPresledkov){
+
+ } else {
+  izpisi(" ");
+  StevecEna = StevecEna + 1;
+  PresledkiEna();
+ } 
+}
+
+StevecDve = 0;
+func ZvezdeEna(){
+  if(StevecDve==SteviloZvezd){
+
+ } else {
+  izpisi("*");
+  StevecDve = StevecDve + 1;
+  ZvezdeEna();
+ } 
+}
+
+func RekurzijaEna(){
+  if(Vrstice==4){
+   
+ } else {
+  PresledkiEna();
+  ZvezdeEna();
+  Vrstice = Vrstice + 1;
+  SteviloPresledkov = SteviloPresledkov - 1;
+  SteviloZvezd = SteviloZvezd + 2;
+  StevecEna = 0;
+  StevecDve = 0;
+  izpisi("\n");
+  RekurzijaEna();
+ } 
+}
+
+
+
+RekurzijaEna();
+
+
+SteviloZvezd = 7;
+SteviloPresledkov = 0;
+Vrstice=0;
+
+StevecEna = 0;
+func Presledki(){
+  if(StevecEna==SteviloPresledkov){
+
+ } else {
+  izpisi(" ");
+  StevecEna = StevecEna + 1;
+  Presledki();
+ } 
+}
+
+StevecDve = 0;
+func Zvezde(){
+  if(StevecDve==SteviloZvezd){
+
+ } else {
+  izpisi("*");
+  StevecDve = StevecDve + 1;
+  Zvezde();
+ } 
+}
+
+func Rekurzija(){
+  if(Vrstice==4){
+   
+ } else {
+  Presledki();
+  Zvezde();
+  Vrstice = Vrstice + 1;
+  SteviloPresledkov = SteviloPresledkov + 1;
+  SteviloZvezd = SteviloZvezd - 2;
+  StevecEna = 0;
+  StevecDve = 0;
+  izpisi("\n");
+  Rekurzija();
+ } 
+}
+
+
+
+Rekurzija();
