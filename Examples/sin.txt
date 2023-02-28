@@ -1,0 +1,117 @@
+DrugaSumacija = 999999999999999;
+radian=1.57;
+ZacetekEna = 1;
+i=4;
+plusorminus=0;
+
+Zmnozek = 1;
+PrviCounter = 1;
+func PrviLoop() {
+  if(PrviCounter==i) {
+    return;
+  } else {
+    izpisi("i je enak: ");
+    izpisi(i);
+    Zmnozek = Zmnozek * radian;
+    PrviCounter = PrviCounter + 1;
+    PrviLoop();
+  }
+}
+
+Zacetek = 1;
+s=1;
+func DrugiLoop() {
+  if(Zacetek==i) {
+    return;
+   } else {
+   s=s*Zacetek;
+   Zacetek = Zacetek + 1;
+   DrugiLoop();
+ }
+}
+
+StevecDve = 0;
+func pow() {
+    if(StevecDve==1)
+    {
+      return;
+    } else {
+    eks=i;
+    StevecDve = StevecDve + 1;
+    PrviLoop();
+   }
+}
+
+func TretjiLoop() {
+  if(ZacetekEna==3) {
+    return;
+   } else {
+    if(DrugaSumacija==999999999999999) {
+     DrugaSumacija = radian; 
+    } else {
+      if (plusorminus == 0) {
+        pow();
+        IzracunStevcaNeg= Zmnozek;
+        izpisi("Kvadrian je ");
+   	  izpisi(Zmnozek);
+  	  izpisi("\n");
+        DrugiLoop();
+        IzracunImenovalcaNeg = s;
+        izpisi("Fakulteta je ");
+   	  izpisi(s);
+  	  izpisi("\n");
+        SkupekNeg = IzracunStevcaNeg / IzracunImenovalcaNeg;
+        DrugaSumacija = DrugaSumacija - SkupekNeg;
+        i=i+2;
+        plusorminus = 1;
+ 
+        PrviCounter = i-2;
+        StevecDve = 0;
+
+        Zacetek = 1;
+        s=1;
+        izpisi(DrugaSumacija);
+        izpisi(" ");
+       } else {
+        pow();
+        IzracunStevca= Zmnozek;
+        izpisi("Kvadrian je ");
+   	  izpisi(Zmnozek);
+  	  izpisi("\n");
+        DrugiLoop();
+        IzracunImenovalca = s;
+        izpisi("Fakulteta je ");
+   	  izpisi(s);
+  	  izpisi("\n");
+        Skupek = IzracunStevca / IzracunImenovalca;
+        DrugaSumacija = DrugaSumacija + Skupek;
+        i=i+2;
+        plusorminus = 0;
+
+	  PrviCounter = i-2;
+        StevecDve = 0;
+
+        Zacetek = 1;
+        s=1;
+        izpisi(DrugaSumacija);
+        izpisi(" ");
+      } 
+    }
+   ZacetekEna = ZacetekEna + 1;
+   TretjiLoop();
+ }
+}
+
+StevecDveEna = 0;
+func sin() {
+    if(StevecDveEna==1)
+    {
+     return;
+    } else {
+    StevecDveEna = StevecDveEna + 1;
+    TretjiLoop();
+    °sin();°
+   }
+}
+
+sin();
