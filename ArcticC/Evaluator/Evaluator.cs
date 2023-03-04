@@ -87,7 +87,7 @@ namespace ArcticC.Evaluator
                         else
                         {
                             int KoncnoStevilo = 0;
-                            for (int l = 0; l <= Count; l++)
+                            for (int l = 0; l <= ProgramArray[0].Length-1; l++)
                             {
                                 if (ProgramArray[0][l] == Variable)
                                 {
@@ -95,7 +95,7 @@ namespace ArcticC.Evaluator
                                     break;
                                 }
                             }
-                            ProgramArray[1][Count] = ProgramArray[1][KoncnoStevilo];
+                            ProgramArray[1][Count] = ProgramArray[1][KoncnoStevilo]; //Tule ga spremeni
                         }
                         Action = "";
                     }
@@ -121,11 +121,11 @@ namespace ArcticC.Evaluator
 
                                 if (Decimal.TryParse(Number, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out PretvojenoSteviloDve))
                                 {
-                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo + Convert.ToDecimal(Number, CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
+                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(Math.Round(PretvojenoStevilo + Convert.ToDecimal(Number, CultureInfo.InvariantCulture),10), CultureInfo.InvariantCulture);
                                 }
                                 else {
                                     string SteviloVArrayu = ProgramArray[1][ProgramArray[0].findIndex(Number)];
-                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo + Convert.ToDecimal(SteviloVArrayu, CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
+                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(Math.Round(PretvojenoStevilo + Convert.ToDecimal(SteviloVArrayu, CultureInfo.InvariantCulture),10), CultureInfo.InvariantCulture);
                                 }
                                 
                                 break;
@@ -150,18 +150,94 @@ namespace ArcticC.Evaluator
                                     i++;
                                 }
                                 decimal PretvojenoStevilo;
-                                Decimal.TryParse(ProgramArray[1][LatestVariableChange], out PretvojenoStevilo);
+                                Decimal.TryParse(ProgramArray[1][LatestVariableChange], System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out PretvojenoStevilo);
 
                                 decimal PretvojenoSteviloDve;
 
-                                if (Decimal.TryParse(Number, out PretvojenoSteviloDve))
+                                if (Decimal.TryParse(Number, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out PretvojenoSteviloDve))
                                 {
-                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo - Convert.ToDecimal(Number));
+                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(Math.Round(PretvojenoStevilo - Convert.ToDecimal(Number, CultureInfo.InvariantCulture),10), CultureInfo.InvariantCulture);
                                 }
                                 else
                                 {
                                     string SteviloVArrayu = ProgramArray[1][ProgramArray[0].findIndex(Number)];
-                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(PretvojenoStevilo - Convert.ToDecimal(SteviloVArrayu));
+                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(Math.Round(PretvojenoStevilo - Convert.ToDecimal(SteviloVArrayu, CultureInfo.InvariantCulture),10), CultureInfo.InvariantCulture);
+                                }
+
+                                break;
+                            }
+                            Variable = Variable + ProgramArrayChar[i];
+                            i++;
+                        }
+                        Action = "";
+                    }
+                    if (Action == "multiply$")
+                    {
+                        string Variable = "";
+                        i++;
+                        while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
+                        {
+                            if (Variable == "integer:" || Variable == "decimal:" || Variable == "identifier:")
+                            {
+                                string Number = "";
+                                while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
+                                {
+                                    Number = Number + ProgramArrayChar[i];
+                                    i++;
+                                }
+                                decimal PretvojenoStevilo;
+                                Decimal.TryParse(ProgramArray[1][LatestVariableChange], System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out PretvojenoStevilo);
+
+                                decimal PretvojenoSteviloDve;
+
+                                if (Decimal.TryParse(Number, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out PretvojenoSteviloDve))
+                                {
+                                    if (PretvojenoStevilo * Convert.ToDecimal(Number, CultureInfo.InvariantCulture) > decimal.MaxValue) { } else
+                                    {
+                                        ProgramArray[1][LatestVariableChange] = Convert.ToString(Math.Round(PretvojenoStevilo * Convert.ToDecimal(Number, CultureInfo.InvariantCulture),10), CultureInfo.InvariantCulture);
+                                    }  
+                                }
+                                else
+                                {
+                                    string SteviloVArrayu = ProgramArray[1][ProgramArray[0].findIndex(Number)];
+                                    if (PretvojenoStevilo * Convert.ToDecimal(SteviloVArrayu, CultureInfo.InvariantCulture) > decimal.MaxValue) { } else { 
+                                        ProgramArray[1][LatestVariableChange] = Convert.ToString(Math.Round(PretvojenoStevilo * Convert.ToDecimal(SteviloVArrayu, CultureInfo.InvariantCulture),10), CultureInfo.InvariantCulture);
+                                    }
+                                }
+                                break;
+                            }
+                            Variable = Variable + ProgramArrayChar[i];
+                            i++;
+                        }
+                        Action = "";
+                    }
+                    if (Action == "divide$")
+                    {
+                        string Variable = "";
+                        i++;
+                        while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
+                        {
+                            if (Variable == "integer:" || Variable == "decimal:" || Variable == "identifier:")
+                            {
+                                string Number = "";
+                                while (ProgramArrayChar[i] != '$' && i <= Tree.Length - 1)
+                                {
+                                    Number = Number + ProgramArrayChar[i];
+                                    i++;
+                                }
+                                decimal PretvojenoStevilo;
+                                Decimal.TryParse(ProgramArray[1][LatestVariableChange], System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out PretvojenoStevilo);
+
+                                decimal PretvojenoSteviloDve;
+
+                                if (Decimal.TryParse(Number, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out PretvojenoSteviloDve))
+                                {
+                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(Math.Round(PretvojenoStevilo / Convert.ToDecimal(Number, CultureInfo.InvariantCulture),10), CultureInfo.InvariantCulture);
+                                }
+                                else
+                                {
+                                    string SteviloVArrayu = ProgramArray[1][ProgramArray[0].findIndex(Number)];
+                                    ProgramArray[1][LatestVariableChange] = Convert.ToString(Math.Round(PretvojenoStevilo / Convert.ToDecimal(SteviloVArrayu, CultureInfo.InvariantCulture),10), CultureInfo.InvariantCulture);
                                 }
 
                                 break;
@@ -191,6 +267,10 @@ namespace ArcticC.Evaluator
                             while (true)
                             {
                                 i = i + 1;
+                                if (i > Tree.Length - 1)
+                                {
+                                    break;
+                                }
                                 if (ProgramArrayChar[i] == '[')
                                 {
                                     if (!FirstTime)
@@ -261,6 +341,10 @@ namespace ArcticC.Evaluator
                             if (ProgramArrayChar[Position] == '$')
                             {
                                 Position++;
+                                if (Position == ProgramArrayChar.Length)
+                                {
+                                    break;
+                                }
                             }
                             while (ProgramArrayChar[Position] != '$' && i <= Tree.Length - 1)
                             {
@@ -395,7 +479,7 @@ namespace ArcticC.Evaluator
                                 int s2;
                                 for (s2 = 0; s2 <= ProgramArray[1].Length - 1; s2++)
                                 {
-                                    if (ProgramArray[0][s2] == Variable2)
+                                    if (ProgramArray[0][s2] == Variable2 || ProgramArray[1][s2] == Variable2)
                                     {
                                         break;
                                     }
@@ -416,34 +500,37 @@ namespace ArcticC.Evaluator
                                     }
                                 }
 
-                                if (ProgramArray[1][s] == ProgramArray[1][s2])
-                                {
-                                    i++;
-                                    ZadnjiBool = true;
-                                }
-                                else
-                                {
-                                    ZadnjiBool = false;
-                                    int ZacetekOklepaj = 0;
-                                    int KonecOklepaj = 0;
-                                    while (true)
+                                //if (s <= ProgramArray.Length - 1 && s2 <= ProgramArray.Length - 1) {
+                                    if (ProgramArray[1][s] == ProgramArray[1][s2])
                                     {
-                                        i = i + 1;
-                                        if (ProgramArrayChar[i] == '[')
+                                        i++;
+                                        ZadnjiBool = true;
+                                    }
+                                    else
+                                    {
+                                        ZadnjiBool = false;
+                                        int ZacetekOklepaj = 0;
+                                        int KonecOklepaj = 0;
+                                        while (true)
                                         {
-                                            ZacetekOklepaj= ZacetekOklepaj+1;
-                                        }
-                                        if (ProgramArrayChar[i] == ']')
-                                        {
-                                            KonecOklepaj= KonecOklepaj+1;
-                                            if(ZacetekOklepaj==KonecOklepaj)
+                                            i = i + 1;
+                                            if (ProgramArrayChar[i] == '[')
                                             {
-                                                break;
+                                                ZacetekOklepaj= ZacetekOklepaj+1;
+                                            }
+                                            if (ProgramArrayChar[i] == ']')
+                                            {
+                                                KonecOklepaj= KonecOklepaj+1;
+                                                if(ZacetekOklepaj==KonecOklepaj)
+                                                {
+                                                    break;
+                                                }
                                             }
                                         }
-                                    }
+                                    } 
                                 }
-                            }
+                                
+                          //  }
                         }
                         Action = "";
                     }

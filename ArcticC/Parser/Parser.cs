@@ -41,6 +41,14 @@ namespace ArcticC.Parser
                             {
                                 Tree = Tree + "minus" + "$";
                             }
+                            if (LexeredArray[1][i].Replace("\"", string.Empty).Trim() == "*")
+                            {
+                                Tree = Tree + "multiply" + "$";
+                            }
+                            if (LexeredArray[1][i].Replace("\"", string.Empty).Trim() == "/")
+                            {
+                                Tree = Tree + "divide" + "$";
+                            }
                         }
                         i++;
                     }

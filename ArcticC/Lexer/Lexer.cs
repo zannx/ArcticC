@@ -28,8 +28,15 @@ namespace ArcticC.Lexer
                     if (ContainsByte(operators, (byte)characterarray[i + 1]))
                     {
                         i++;
-                        Together = Together + characterarray[i].ToString();
-                        SourceAppart[1][Count] = "\"" + Together + "\"";
+                        if (Together == "=" && characterarray[i].ToString() == "+" || Together == "=" && characterarray[i].ToString() == "-")
+                        {
+                            i--;
+                            //continue;
+                        }
+                        else {
+                            Together = Together + characterarray[i].ToString();
+                            SourceAppart[1][Count] = "\"" + Together + "\"";
+                        }
                     }
                     Count = Count + 1;
                     continue;
@@ -101,6 +108,7 @@ namespace ArcticC.Lexer
                             || CheckBytes(GenerateByteArray(NameVariable), BREAK)
                             || CheckBytes(GenerateByteArray(NameVariable), SWITCH)
                             || CheckBytes(GenerateByteArray(NameVariable), CONTINUE)
+                            || CheckBytes(GenerateByteArray(NameVariable), RETURN)
                             || CheckBytes(GenerateByteArray(NameVariable), FUNC))
                         {
                             SourceAppart[0][Count] = "\"keyword\"";

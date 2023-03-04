@@ -69,6 +69,7 @@ namespace ArcticC
                             EvaluatorVoid(Parser);
                             Console.WriteLine("--------------------------------------");
                             watch.Stop();
+                            Console.WriteLine("");
                             Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
                         }
                         else
