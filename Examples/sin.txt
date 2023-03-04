@@ -1,5 +1,5 @@
 DrugaSumacija = 999999999999999;
-radian=1.57;
+radian=0;
 ZacetekEna = 1;
 i=4;
 plusorminus=0;
@@ -10,8 +10,6 @@ func PrviLoop() {
   if(PrviCounter==i) {
     return;
   } else {
-    izpisi("i je enak: ");
-    izpisi(i);
     Zmnozek = Zmnozek * radian;
     PrviCounter = PrviCounter + 1;
     PrviLoop();
@@ -43,23 +41,18 @@ func pow() {
 }
 
 func TretjiLoop() {
-  if(ZacetekEna==3) {
+  if(ZacetekEna==2) {
     return;
    } else {
     if(DrugaSumacija==999999999999999) {
      DrugaSumacija = radian; 
     } else {
       if (plusorminus == 0) {
+        DrugiLoop();
+        if(s==10888869450418352160768000000) {return;} else {
         pow();
         IzracunStevcaNeg= Zmnozek;
-        izpisi("Kvadrian je ");
-   	  izpisi(Zmnozek);
-  	  izpisi("\n");
-        DrugiLoop();
         IzracunImenovalcaNeg = s;
-        izpisi("Fakulteta je ");
-   	  izpisi(s);
-  	  izpisi("\n");
         SkupekNeg = IzracunStevcaNeg / IzracunImenovalcaNeg;
         DrugaSumacija = DrugaSumacija - SkupekNeg;
         i=i+2;
@@ -70,19 +63,16 @@ func TretjiLoop() {
 
         Zacetek = 1;
         s=1;
-        izpisi(DrugaSumacija);
-        izpisi(" ");
+ 
+        ZacetekEna = ZacetekEna + 1;
+        TretjiLoop();
+        }
        } else {
+        DrugiLoop();
+        if(s==10888869450418352160768000000) {return;} else {
         pow();
         IzracunStevca= Zmnozek;
-        izpisi("Kvadrian je ");
-   	  izpisi(Zmnozek);
-  	  izpisi("\n");
-        DrugiLoop();
         IzracunImenovalca = s;
-        izpisi("Fakulteta je ");
-   	  izpisi(s);
-  	  izpisi("\n");
         Skupek = IzracunStevca / IzracunImenovalca;
         DrugaSumacija = DrugaSumacija + Skupek;
         i=i+2;
@@ -93,25 +83,28 @@ func TretjiLoop() {
 
         Zacetek = 1;
         s=1;
-        izpisi(DrugaSumacija);
-        izpisi(" ");
+
+        ZacetekEna = ZacetekEna + 1;
+        TretjiLoop();
+        }
       } 
     }
-   ZacetekEna = ZacetekEna + 1;
-   TretjiLoop();
- }
+  }
 }
 
 StevecDveEna = 0;
-func sin() {
+func sin(e) {
     if(StevecDveEna==1)
     {
+     izpisi(DrugaSumacija);
+     izpisi("\n");
      return;
     } else {
     StevecDveEna = StevecDveEna + 1;
+    radian=e;
     TretjiLoop();
-    °sin();°
+    sin();
    }
 }
 
-sin();
+sin(1.57079632679);
