@@ -1,0 +1,39 @@
+Stevec = 2;
+func Recursion(){
+  if(Stevec==Dolzina)
+    {
+
+    } else {
+     c = a+b;
+     izpisi(c);
+     izpisi(" ");
+     a=b;
+     b=c;
+     Stevec = Stevec + 1;
+     Recursion();
+    }
+}
+
+StevecDve = 0;
+func Fibonacci(o) {
+    if(StevecDve==1)
+    {
+
+    } else {
+  a = 0;
+  b = 1;
+  c = 0;
+
+  Dolzina = o;
+
+  izpisi(a);
+  izpisi(" ");
+  izpisi(b);
+  izpisi(" ");
+  Recursion();
+  izpisi("\n");
+  StevecDve = StevecDve + 1;
+ }
+}
+
+Fibonacci(10);

@@ -1,0 +1,110 @@
+DrugaSumacija = 999999999999999;
+radian=0;
+ZacetekEna = 1;
+i=4;
+plusorminus=0;
+
+Zmnozek = 1;
+PrviCounter = 1;
+func PrviLoop() {
+  if(PrviCounter==i) {
+    return;
+  } else {
+    Zmnozek = Zmnozek * radian;
+    PrviCounter = PrviCounter + 1;
+    PrviLoop();
+  }
+}
+
+Zacetek = 1;
+s=1;
+func DrugiLoop() {
+  if(Zacetek==i) {
+    return;
+   } else {
+   s=s*Zacetek;
+   Zacetek = Zacetek + 1;
+   DrugiLoop();
+ }
+}
+
+StevecDve = 0;
+func pow() {
+    if(StevecDve==1)
+    {
+      return;
+    } else {
+    eks=i;
+    StevecDve = StevecDve + 1;
+    PrviLoop();
+   }
+}
+
+func TretjiLoop() {
+  if(ZacetekEna==2) {
+    return;
+   } else {
+    if(DrugaSumacija==999999999999999) {
+     DrugaSumacija = radian; 
+    } else {
+      if (plusorminus == 0) {
+        DrugiLoop();
+        if(s==10888869450418352160768000000) {return;} else {
+        pow();
+        IzracunStevcaNeg= Zmnozek;
+        IzracunImenovalcaNeg = s;
+        SkupekNeg = IzracunStevcaNeg / IzracunImenovalcaNeg;
+        DrugaSumacija = DrugaSumacija - SkupekNeg;
+        i=i+2;
+        plusorminus = 1;
+ 
+        PrviCounter = i-2;
+        StevecDve = 0;
+
+        Zacetek = 1;
+        s=1;
+ 
+        ZacetekEna = ZacetekEna + 1;
+        TretjiLoop();
+        }
+       } else {
+        DrugiLoop();
+        if(s==10888869450418352160768000000) {return;} else {
+        pow();
+        IzracunStevca= Zmnozek;
+        IzracunImenovalca = s;
+        Skupek = IzracunStevca / IzracunImenovalca;
+        DrugaSumacija = DrugaSumacija + Skupek;
+        i=i+2;
+        plusorminus = 0;
+
+	  PrviCounter = i-2;
+        StevecDve = 0;
+
+        Zacetek = 1;
+        s=1;
+
+        ZacetekEna = ZacetekEna + 1;
+        TretjiLoop();
+        }
+      } 
+    }
+  }
+}
+
+StevecDveEna = 0;
+func sin(e) {
+    if(StevecDveEna==1)
+    {
+     izpisi(DrugaSumacija);
+     izpisi("\n");
+     return;
+    } else {
+    StevecDveEna = StevecDveEna + 1;
+    radian=e;
+    TretjiLoop();
+    sin();
+   }
+}
+
+sin(1.57079632679);
